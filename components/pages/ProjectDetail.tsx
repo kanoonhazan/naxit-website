@@ -109,13 +109,13 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack })
             {project.gallery && project.gallery.length > 0 && (
               <section>
                 <h3 className="font-display text-2xl font-bold mb-6">Visuals</h3>
-                <div className="grid md:grid-cols-2 gap-6">
+                <div className="columns-1 md:columns-2 gap-6 space-y-6">
                   {project.gallery.map((img, i) => (
-                    <div key={i} className="rounded-xl overflow-hidden border border-white/10 shadow-lg group">
+                    <div key={i} className="break-inside-avoid rounded-xl overflow-hidden border border-white/10 shadow-lg group">
                       <img
                         src={img}
                         alt={`Gallery ${i}`}
-                        className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105"
+                        className="w-full h-auto object-contain transition-transform duration-500 group-hover:scale-105"
                       />
                     </div>
                   ))}

@@ -53,7 +53,8 @@ export const AdminPage: React.FC = () => {
             solution: '',
             outcome: '',
             serviceId: 'ui-ux',
-            description: ''
+            description: '',
+            gallery: []
         });
         setView('form');
     };
@@ -269,7 +270,67 @@ export const AdminPage: React.FC = () => {
                                         />
                                     </div>
 
-                                    {/* Simplified for verification, can add more fields as needed */}
+                                    <div className="col-span-2">
+                                        <label className="block text-sm font-medium text-gray-400 mb-2">Project Visuals (Gallery)</label>
+
+                                        <div className="space-y-3 mb-4">
+                                            {formData.gallery && formData.gallery.map((url: string, index: number) => (
+                                                <div key={index} className="flex items-center gap-3 bg-white/5 p-2 rounded-lg border border-white/5 group">
+                                                    <div className="w-10 h-10 rounded overflow-hidden bg-black/50 flex-shrink-0">
+                                                        <img src={url} alt="" className="w-full h-full object-cover" />
+                                                    </div>
+                                                    <div className="flex-1 text-sm text-gray-300 truncate font-mono">{url}</div>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => {
+                                                            const newGallery = [...(formData.gallery || [])];
+                                                            newGallery.splice(index, 1);
+                                                            setFormData({ ...formData, gallery: newGallery });
+                                                        }}
+                                                        className="text-gray-500 hover:text-red-400 p-2 opacity-0 group-hover:opacity-100 transition-all"
+                                                    >
+                                                        Remove
+                                                    </button>
+                                                </div>
+                                            ))}
+                                        </div>
+
+                                        <div className="flex gap-2">
+                                            <input
+                                                type="url"
+                                                id="new-visual-url"
+                                                placeholder="Paste image URL here..."
+                                                className="flex-1 bg-naxit-bg border border-white/10 rounded-lg p-3 text-white focus:border-naxit-primary outline-none"
+                                                onKeyDown={(e) => {
+                                                    if (e.key === 'Enter') {
+                                                        e.preventDefault();
+                                                        const input = e.currentTarget;
+                                                        if (input.value) {
+                                                            const newGallery = [...(formData.gallery || []), input.value];
+                                                            setFormData({ ...formData, gallery: newGallery });
+                                                            input.value = '';
+                                                        }
+                                                    }
+                                                }}
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={() => {
+                                                    const input = document.getElementById('new-visual-url') as HTMLInputElement;
+                                                    if (input && input.value) {
+                                                        const newGallery = [...(formData.gallery || []), input.value];
+                                                        setFormData({ ...formData, gallery: newGallery });
+                                                        input.value = '';
+                                                    }
+                                                }}
+                                                className="px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors text-sm font-medium"
+                                            >
+                                                Add
+                                            </button>
+                                        </div>
+                                        <p className="text-xs text-gray-500 mt-2">Press Enter or click Add to include image in gallery.</p>
+                                    </div>
+
                                     <div className="col-span-2">
                                         <label className="block text-sm font-medium text-gray-400 mb-2">Full Description</label>
                                         <textarea
