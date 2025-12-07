@@ -9,6 +9,7 @@ interface ProjectDetailProps {
   onBack: () => void;
 }
 
+
 export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack }) => {
   // Scroll to top on mount
   useEffect(() => {
