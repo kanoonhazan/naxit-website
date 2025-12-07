@@ -105,23 +105,7 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack })
               </p>
             </section>
 
-            {/* Gallery */}
-            {project.gallery && project.gallery.length > 0 && (
-              <section>
-                <h3 className="font-display text-2xl font-bold mb-6">Visuals</h3>
-                <div className="columns-1 md:columns-2 gap-6 space-y-6">
-                  {project.gallery.map((img, i) => (
-                    <div key={i} className="break-inside-avoid rounded-xl overflow-hidden border border-white/10 shadow-lg group">
-                      <img
-                        src={img}
-                        alt={`Gallery ${i}`}
-                        className="w-full h-auto object-contain transition-transform duration-500 group-hover:scale-105"
-                      />
-                    </div>
-                  ))}
-                </div>
-              </section>
-            )}
+            {/* Gallery Moved to Bottom */}
           </div>
 
           {/* Sidebar */}
@@ -162,6 +146,27 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack })
           </div>
 
         </div>
+
+        {/* Full Width Gallery */}
+        {project.gallery && project.gallery.length > 0 && (
+          <section className="mt-16">
+            <h3 className="font-display text-2xl font-bold mb-8 flex items-center gap-3">
+              <span className="w-8 h-1 bg-naxit-violet rounded-full"></span>
+              Visuals
+            </h3>
+            <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
+              {project.gallery.map((img, i) => (
+                <div key={i} className="break-inside-avoid rounded-xl overflow-hidden border border-white/10 shadow-lg group bg-white/5">
+                  <img
+                    src={img}
+                    alt={`Gallery ${i}`}
+                    className="w-full h-auto object-contain transition-transform duration-500 group-hover:scale-105"
+                  />
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
 
       </div>
     </motion.div>
