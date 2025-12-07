@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button } from '../ui/Button';
-import { Send, CheckCircle } from 'lucide-react';
+import { Send, CheckCircle, Phone, MessageCircle, Mail } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export const Contact: React.FC = () => {
@@ -42,6 +42,31 @@ export const Contact: React.FC = () => {
                 <p className="text-naxit-muted mb-8">
                   Fill out the form to request an estimate or schedule a free 20-minute scoping call. We usually reply within 48 hours.
                 </p>
+
+                {/* Official Contact Details */}
+                <div className="space-y-4 mb-8">
+                  <h3 className="text-sm font-semibold uppercase tracking-wider text-white">Contact Us</h3>
+                  <div className="space-y-3">
+                    <a href="mailto:naxitofficial@gmail.com" className="flex items-center gap-3 text-gray-400 hover:text-naxit-primary transition-colors">
+                      <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center">
+                        <Mail size={14} />
+                      </div>
+                      <span className="text-sm">naxitofficial@gmail.com</span>
+                    </a>
+                    <a href="tel:+94758089209" className="flex items-center gap-3 text-gray-400 hover:text-naxit-primary transition-colors">
+                      <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center">
+                        <Phone size={14} />
+                      </div>
+                      <span className="text-sm">+94 75 8089 209</span>
+                    </a>
+                    <a href="https://wa.me/94758089209" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-gray-400 hover:text-naxit-primary transition-colors">
+                      <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center">
+                        <MessageCircle size={14} />
+                      </div>
+                      <span className="text-sm">WhatsApp Support</span>
+                    </a>
+                  </div>
+                </div>
 
                 <div className="space-y-4">
                   <div className="flex items-center gap-4">
