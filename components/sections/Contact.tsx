@@ -45,10 +45,10 @@ export const Contact: React.FC = () => {
 
                 <div className="space-y-4">
                   <div className="flex items-center gap-4">
-                    <img src="https://picsum.photos/100/100?random=10" alt="Founder" className="w-12 h-12 rounded-full border-2 border-naxit-cyan" />
+                    <img src="/images/kanoon-hazan.png" alt="Kanoon Hazan" className="w-12 h-12 rounded-full border-2 border-naxit-cyan object-cover" />
                     <div>
-                      <div className="font-bold text-white">Alex Chen</div>
-                      <div className="text-xs text-naxit-muted">Technical Lead & Founder</div>
+                      <div className="font-bold text-white">Kanoon Hazan</div>
+                      <div className="text-xs text-naxit-muted">Founder & CEO</div>
                     </div>
                   </div>
                   <blockquote className="text-sm italic text-gray-400 border-l-2 border-naxit-primary pl-4">
@@ -103,7 +103,7 @@ export const Contact: React.FC = () => {
                       name="mobile"
                       required
                       className="w-full bg-black/30 border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:border-naxit-primary transition-colors focus:bg-black/50"
-                      placeholder="+1 (555) 000-0000"
+                      placeholder="+94-123456789"
                       value={formData.mobile}
                       onChange={(e) => setFormData({ ...formData, mobile: e.target.value })}
                     />
