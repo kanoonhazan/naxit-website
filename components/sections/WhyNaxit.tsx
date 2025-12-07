@@ -1,5 +1,5 @@
 import React from 'react';
-import { BarChart, Bar, XAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
+// Recharts removed in favor of custom CSS/Motion bars
 import { Figma, Framer, Code, Cpu, Smartphone, Database } from 'lucide-react';
 import { Card } from '../ui/Card';
 import { motion } from 'framer-motion';
@@ -60,31 +60,44 @@ export const WhyNaxit: React.FC = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
           >
-            <Card className="h-64 flex flex-col justify-center relative overflow-hidden" hoverEffect>
-              <h3 className="text-center mb-4 text-sm font-mono text-naxit-muted">ENGINEERING VELOCITY SCORE</h3>
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={data} layout="vertical" margin={{ top: 0, right: 30, left: 30, bottom: 0 }}>
-                  <XAxis type="number" hide />
-                  <Tooltip
-                    cursor={{ fill: 'transparent' }}
-                    contentStyle={{ backgroundColor: '#0F1720', borderColor: '#333', borderRadius: '8px', color: '#fff' }}
-                  />
-                  <Bar dataKey="value" radius={[0, 4, 4, 0]} barSize={40} animationDuration={1500}>
-                    {data.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={index === 1 ? 'url(#colorGradient)' : '#374151'} />
-                    ))}
-                  </Bar>
-                </BarChart>
-              </ResponsiveContainer>
-              {/* Defs for gradient */}
-              <svg style={{ height: 0 }}>
-                <defs>
-                  <linearGradient id="colorGradient" x1="0" y1="0" x2="1" y2="0">
-                    <stop offset="0%" stopColor="#8A5BFF" />
-                    <stop offset="100%" stopColor="#00E6FF" />
-                  </linearGradient>
-                </defs>
-              </svg>
+            <Card className="h-64 flex flex-col justify-center relative overflow-hidden bg-[#0a0f18] border-white/5" hoverEffect>
+              <h3 className="text-center mb-8 text-sm font-mono tracking-widest text-gray-400 uppercase">ENGINEERING VELOCITY SCORE</h3>
+
+              <div className="w-full max-w-md mx-auto space-y-6 px-4">
+
+                {/* Before Bar */}
+                <div>
+                  <div className="flex justify-between items-end mb-2">
+                    <span className="text-sm text-gray-400 font-medium">Before</span>
+                    <span className="text-sm text-gray-400 font-bold">40%</span>
+                  </div>
+                  <div className="h-14 w-full bg-white/5 rounded-lg overflow-hidden relative">
+                    <motion.div
+                      initial={{ width: 0 }}
+                      whileInView={{ width: '40%' }}
+                      transition={{ duration: 1.5, ease: "easeOut" }}
+                      className="h-full bg-[#374151] rounded-r-lg"
+                    />
+                  </div>
+                </div>
+
+                {/* NAXIT Bar */}
+                <div>
+                  <div className="flex justify-between items-end mb-2">
+                    <span className="text-sm text-white font-bold">NAXIT</span>
+                    <span className="text-sm text-white font-bold">95%</span>
+                  </div>
+                  <div className="h-14 w-full bg-white/5 rounded-lg overflow-hidden relative">
+                    <motion.div
+                      initial={{ width: 0 }}
+                      whileInView={{ width: '95%' }}
+                      transition={{ duration: 1.5, delay: 0.2, ease: "easeOut" }}
+                      className="h-full bg-gradient-to-r from-[#5b6bff] to-[#00d4ff] rounded-r-lg shadow-[0_0_20px_rgba(91,107,255,0.4)]"
+                    />
+                  </div>
+                </div>
+
+              </div>
             </Card>
           </motion.div>
         </div>
