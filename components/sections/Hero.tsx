@@ -64,7 +64,7 @@ export const Hero: React.FC = () => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          <div className="relative w-full aspect-square max-w-[550px] lg:-ml-24 lg:-mt-12 mx-auto">
+          <div className="relative w-full aspect-square max-w-[550px] lg:-ml-24 mx-auto">
 
             {/* SVG Connection Lines - layer-lines (z-10) */}
             <svg className="absolute inset-0 w-full h-full pointer-events-none z-10">
