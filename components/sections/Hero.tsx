@@ -25,7 +25,7 @@ export const Hero: React.FC = () => {
           </div>
 
           <h1 className="font-display text-5xl lg:text-7xl font-bold leading-tight">
-            Design that <span className="text-transparent bg-clip-text bg-gradient-to-r from-naxit-violet via-naxit-primary to-naxit-cyan">engineers can ship</span> — fast.
+            Design that <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-blue-500 to-cyan-500">engineers can ship</span> — fast.
           </h1>
 
           <p className="text-lg lg:text-xl text-naxit-muted max-w-xl leading-relaxed">
@@ -75,10 +75,10 @@ export const Hero: React.FC = () => {
               <div className="p-6 relative flex-1">
                 <div className="space-y-4">
                   <div className="flex gap-4">
-                    <div className="w-1/3 h-24 rounded-xl bg-white/5 animate-pulse" />
+                    <div className="w-1/3 h-24 rounded-xl bg-white/10 animate-pulse" />
                     <div className="w-2/3 space-y-3">
-                      <div className="h-4 w-3/4 bg-white/10 rounded" />
-                      <div className="h-4 w-1/2 bg-white/10 rounded" />
+                      <div className="h-4 w-3/4 bg-white/20 rounded" />
+                      <div className="h-4 w-1/2 bg-white/20 rounded" />
                       <div className="h-8 w-1/3 bg-naxit-primary/20 rounded mt-2" />
                     </div>
                   </div>

@@ -212,44 +212,180 @@ export const AdminPage: React.FC = () => {
                                 {editingProject ? 'Edit Project' : 'Create New Project'}
                             </h2>
 
-                            <form onSubmit={handleSubmit} className="space-y-6">
-                                <div className="grid grid-cols-2 gap-6">
-                                    <div className="col-span-2">
-                                        <label className="block text-sm font-medium text-gray-400 mb-2">Project Title</label>
-                                        <input
-                                            type="text"
-                                            required
-                                            value={formData.title}
-                                            onChange={e => setFormData({ ...formData, title: e.target.value })}
-                                            className="w-full bg-naxit-bg border border-white/10 rounded-lg p-3 text-white focus:border-naxit-primary outline-none focus:ring-1 focus:ring-naxit-primary"
+                            <form onSubmit={handleSubmit} className="space-y-8">
+                                {/* Section 1: Basic Info */}
+                                <div className="space-y-4">
+                                    <h3 className="text-lg font-semibold text-white border-b border-white/10 pb-2">Basic Information</h3>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <div className="col-span-2">
+                                            <label className="block text-sm font-medium text-gray-400 mb-2">Project Title</label>
+                                            <input
+                                                type="text"
+                                                required
+                                                value={formData.title}
+                                                onChange={e => setFormData({ ...formData, title: e.target.value })}
+                                                className="w-full bg-naxit-bg border border-white/10 rounded-lg p-3 text-white focus:border-naxit-primary outline-none focus:ring-1 focus:ring-naxit-primary"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-400 mb-2">Category (Display)</label>
+                                            <input
+                                                type="text"
+                                                placeholder="e.g. UI/UX Design"
+                                                required
+                                                value={formData.category}
+                                                onChange={e => setFormData({ ...formData, category: e.target.value })}
+                                                className="w-full bg-naxit-bg border border-white/10 rounded-lg p-3 text-white focus:border-naxit-primary outline-none"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-400 mb-2">Service Filter ID</label>
+                                            <select
+                                                value={formData.serviceId}
+                                                onChange={e => setFormData({ ...formData, serviceId: e.target.value })}
+                                                className="w-full bg-naxit-bg border border-white/10 rounded-lg p-3 text-white focus:border-naxit-primary outline-none"
+                                            >
+                                                <option value="ui-ux">UI/UX Design</option>
+                                                <option value="branding">Branding</option>
+                                                <option value="gui">Embedded GUI</option>
+                                                <option value="graphic">Graphic Design</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-400 mb-2">My Role</label>
+                                            <input
+                                                type="text"
+                                                placeholder="e.g. Design & Dev"
+                                                value={formData.role || ''}
+                                                onChange={e => setFormData({ ...formData, role: e.target.value })}
+                                                className="w-full bg-naxit-bg border border-white/10 rounded-lg p-3 text-white focus:border-naxit-primary outline-none"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-400 mb-2">Timeline</label>
+                                            <input
+                                                type="text"
+                                                placeholder="e.g. 4 Weeks"
+                                                value={formData.timeline || ''}
+                                                onChange={e => setFormData({ ...formData, timeline: e.target.value })}
+                                                className="w-full bg-naxit-bg border border-white/10 rounded-lg p-3 text-white focus:border-naxit-primary outline-none"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Section 2: Tech Stack */}
+                                <div className="space-y-4">
+                                    <h3 className="text-lg font-semibold text-white border-b border-white/10 pb-2">Tech Stack</h3>
+                                    <div>
+                                        <div className="flex flex-wrap gap-2 mb-3">
+                                            {formData.stack && formData.stack.map((tech: string, i: number) => (
+                                                <span key={i} className="px-3 py-1 rounded-full bg-naxit-primary/20 text-naxit-primary text-sm border border-naxit-primary/30 flex items-center gap-2">
+                                                    {tech}
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => {
+                                                            const newStack = [...(formData.stack || [])];
+                                                            newStack.splice(i, 1);
+                                                            setFormData({ ...formData, stack: newStack });
+                                                        }}
+                                                        className="hover:text-white"
+                                                    >
+                                                        ×
+                                                    </button>
+                                                </span>
+                                            ))}
+                                        </div>
+                                        <div className="flex gap-2">
+                                            <input
+                                                type="text"
+                                                id="new-stack-item"
+                                                placeholder="Add tech (e.g. React, Figma)..."
+                                                className="flex-1 bg-naxit-bg border border-white/10 rounded-lg p-3 text-white focus:border-naxit-primary outline-none"
+                                                onKeyDown={(e) => {
+                                                    if (e.key === 'Enter') {
+                                                        e.preventDefault();
+                                                        const input = e.currentTarget;
+                                                        if (input.value) {
+                                                            const newStack = [...(formData.stack || []), input.value];
+                                                            setFormData({ ...formData, stack: newStack });
+                                                            input.value = '';
+                                                        }
+                                                    }
+                                                }}
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={() => {
+                                                    const input = document.getElementById('new-stack-item') as HTMLInputElement;
+                                                    if (input && input.value) {
+                                                        const newStack = [...(formData.stack || []), input.value];
+                                                        setFormData({ ...formData, stack: newStack });
+                                                        input.value = '';
+                                                    }
+                                                }}
+                                                className="px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors font-medium"
+                                            >
+                                                Add
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Section 3: Detailed Content */}
+                                <div className="space-y-4">
+                                    <h3 className="text-lg font-semibold text-white border-b border-white/10 pb-2">Case Study Content</h3>
+
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-400 mb-2">The Challenge (Problem)</label>
+                                        <textarea
+                                            rows={3}
+                                            value={formData.challenge || formData.problem || ''}
+                                            onChange={e => setFormData({ ...formData, challenge: e.target.value, problem: e.target.value })}
+                                            className="w-full bg-naxit-bg border border-white/10 rounded-lg p-3 text-white focus:border-naxit-primary outline-none"
+                                            placeholder="What was the core problem?"
                                         />
                                     </div>
+
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-400 mb-2">Category (Display)</label>
-                                        <input
-                                            type="text"
-                                            placeholder="e.g. UI/UX Design"
-                                            required
-                                            value={formData.category}
-                                            onChange={e => setFormData({ ...formData, category: e.target.value })}
+                                        <label className="block text-sm font-medium text-gray-400 mb-2">Our Approach (Solution)</label>
+                                        <textarea
+                                            rows={3}
+                                            value={formData.approach || formData.solution || ''}
+                                            onChange={e => setFormData({ ...formData, approach: e.target.value, solution: e.target.value })}
+                                            className="w-full bg-naxit-bg border border-white/10 rounded-lg p-3 text-white focus:border-naxit-primary outline-none"
+                                            placeholder="How did we solve it?"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-400 mb-2">The Outcome (Impact)</label>
+                                        <textarea
+                                            rows={2}
+                                            value={formData.outcome || ''}
+                                            onChange={e => setFormData({ ...formData, outcome: e.target.value })}
+                                            className="w-full bg-naxit-bg border border-white/10 rounded-lg p-3 text-white focus:border-naxit-primary outline-none"
+                                            placeholder="e.g. 40% increase in user retention..."
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-400 mb-2">Full Description (SEO / Summary)</label>
+                                        <textarea
+                                            rows={4}
+                                            value={formData.fullDescription || ''}
+                                            onChange={e => setFormData({ ...formData, fullDescription: e.target.value })}
                                             className="w-full bg-naxit-bg border border-white/10 rounded-lg p-3 text-white focus:border-naxit-primary outline-none"
                                         />
                                     </div>
+                                </div>
+
+                                {/* Section 4: Visuals */}
+                                <div className="space-y-4">
+                                    <h3 className="text-lg font-semibold text-white border-b border-white/10 pb-2">Visual Assets</h3>
+
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-400 mb-2">Service Filter ID</label>
-                                        <select
-                                            value={formData.serviceId}
-                                            onChange={e => setFormData({ ...formData, serviceId: e.target.value })}
-                                            className="w-full bg-naxit-bg border border-white/10 rounded-lg p-3 text-white focus:border-naxit-primary outline-none"
-                                        >
-                                            <option value="ui-ux">UI/UX Design</option>
-                                            <option value="branding">Branding</option>
-                                            <option value="gui">Embedded GUI</option>
-                                            <option value="graphic">Graphic Design</option>
-                                        </select>
-                                    </div>
-                                    <div className="col-span-2">
-                                        <label className="block text-sm font-medium text-gray-400 mb-2">Image URL</label>
+                                        <label className="block text-sm font-medium text-gray-400 mb-2">Main Cover Image URL</label>
                                         <input
                                             type="url"
                                             placeholder="https://..."
@@ -259,27 +395,25 @@ export const AdminPage: React.FC = () => {
                                             className="w-full bg-naxit-bg border border-white/10 rounded-lg p-3 text-white focus:border-naxit-primary outline-none"
                                         />
                                     </div>
-                                    <div className="col-span-2">
-                                        <label className="block text-sm font-medium text-gray-400 mb-2">Problem Statement</label>
-                                        <textarea
-                                            rows={3}
-                                            required
-                                            value={formData.problem}
-                                            onChange={e => setFormData({ ...formData, problem: e.target.value })}
-                                            className="w-full bg-naxit-bg border border-white/10 rounded-lg p-3 text-white focus:border-naxit-primary outline-none"
-                                        />
-                                    </div>
 
-                                    <div className="col-span-2">
-                                        <label className="block text-sm font-medium text-gray-400 mb-2">Project Visuals (Gallery)</label>
-
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-400 mb-2">Project Gallery</label>
                                         <div className="space-y-3 mb-4">
                                             {formData.gallery && formData.gallery.map((url: string, index: number) => (
                                                 <div key={index} className="flex items-center gap-3 bg-white/5 p-2 rounded-lg border border-white/5 group">
-                                                    <div className="w-10 h-10 rounded overflow-hidden bg-black/50 flex-shrink-0">
+                                                    <div className="w-16 h-12 rounded overflow-hidden bg-black/50 flex-shrink-0">
                                                         <img src={url} alt="" className="w-full h-full object-cover" />
                                                     </div>
-                                                    <div className="flex-1 text-sm text-gray-300 truncate font-mono">{url}</div>
+                                                    <input
+                                                        type="text"
+                                                        value={url}
+                                                        onChange={(e) => {
+                                                            const newGallery = [...(formData.gallery || [])];
+                                                            newGallery[index] = e.target.value;
+                                                            setFormData({ ...formData, gallery: newGallery });
+                                                        }}
+                                                        className="flex-1 bg-transparent border-none text-sm text-gray-300 font-mono focus:outline-none"
+                                                    />
                                                     <button
                                                         type="button"
                                                         onClick={() => {
@@ -287,7 +421,7 @@ export const AdminPage: React.FC = () => {
                                                             newGallery.splice(index, 1);
                                                             setFormData({ ...formData, gallery: newGallery });
                                                         }}
-                                                        className="text-gray-500 hover:text-red-400 p-2 opacity-0 group-hover:opacity-100 transition-all"
+                                                        className="text-gray-500 hover:text-red-400 p-2"
                                                     >
                                                         Remove
                                                     </button>
@@ -323,27 +457,16 @@ export const AdminPage: React.FC = () => {
                                                         input.value = '';
                                                     }
                                                 }}
-                                                className="px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors text-sm font-medium"
+                                                className="px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors font-medium"
                                             >
                                                 Add
                                             </button>
                                         </div>
-                                        <p className="text-xs text-gray-500 mt-2">Press Enter or click Add to include image in gallery.</p>
-                                    </div>
-
-                                    <div className="col-span-2">
-                                        <label className="block text-sm font-medium text-gray-400 mb-2">Full Description</label>
-                                        <textarea
-                                            rows={5}
-                                            value={formData.fullDescription || ''}
-                                            onChange={e => setFormData({ ...formData, fullDescription: e.target.value })}
-                                            className="w-full bg-naxit-bg border border-white/10 rounded-lg p-3 text-white focus:border-naxit-primary outline-none"
-                                        />
                                     </div>
                                 </div>
 
                                 <div className="pt-6 border-t border-white/5 flex justify-end gap-4">
-                                    <button type="button" onClick={() => setView('list')} className="px-6 py-3 rounded-lg font-bold hover:bg-white/5 transition-colors">
+                                    <button type="button" onClick={() => setView('list')} className="px-6 py-3 rounded-lg font-bold hover:bg-white/5 transition-colors text-gray-400">
                                         Cancel
                                     </button>
                                     <Button type="submit">
