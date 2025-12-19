@@ -1,38 +1,42 @@
 import React from 'react';
 import { Card } from '../ui/Card';
-import { Palette, Layout, Cpu, PenTool, ArrowRight } from 'lucide-react';
+import { Palette, Layout, Cpu, PenTool, ArrowRight, Globe, Layers } from 'lucide-react';
 import { Service } from '../../types';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
 const services: Service[] = [
   {
+    id: 'website',
+    title: 'Website Development',
+    description: 'Conversion-focused websites built to grow your business.',
+    longDescription: 'Landing pages and business websites designed to get you discovered, capture leads, and drive action - optimized for speed, SEO, and performance from day one.',
+    outcomes: ['Landing pages & business websites', 'Lead capture & contact flows', 'Analytics & performance tracking'],
+    icon: Globe
+  },
+  {
     id: 'ui-ux',
     title: 'UI/UX Design',
-    description: 'Research-led interfaces that convert. We design logic, not just pretty screens.',
-    outcomes: ['User Flows & Journeys', 'High-fidelity Wireframes', 'Interactive Prototypes'],
-    icon: Layout
+    description: 'Design that engineers can ship without friction.',
+    longDescription: 'We design user flows, interfaces, and design systems grounded in real user behavior and real development constraints - not just visuals that look good.',
+    outcomes: ['User flows & journeys', 'High-fidelity wireframes & interfaces', 'Design systems with clean developer handoff'],
+    icon: Layers
   },
   {
-    id: 'branding',
-    title: 'Brand Systems',
-    description: 'Identity & visual systems that scale across digital and physical touchpoints.',
-    outcomes: ['Logo & Identity', 'Design Tokens', 'Usage Guidelines'],
-    icon: Palette
-  },
-  {
-    id: 'gui',
-    title: 'Embedded GUI',
-    description: 'Specialized designs for low-resource hardware. Nextion & LVGL experts.',
-    outcomes: ['HMI Interface Design', 'Memory Optimization', 'Hardware Integration'],
+    id: 'embedded',
+    title: 'Embedded Interfaces',
+    description: 'Human-centric interfaces for machines.',
+    longDescription: 'We design efficient, intuitive GUIs for embedded systems - balancing usability, performance, and hardware limitations across ESP32, Nextion, and LVGL environments.',
+    outcomes: ['HMI & embedded UI design', 'Custom LVGL & Nextion interfaces', 'Hardware-aware, memory-efficient layouts'],
     icon: Cpu
   },
   {
-    id: 'graphic',
-    title: 'Graphic Design',
-    description: 'On-brand visuals for marketing, social, and investor pitch decks.',
-    outcomes: ['Marketing Assets', 'Social Media Kits', 'Pitch Decks'],
-    icon: PenTool
+    id: 'branding',
+    title: 'Branding & Design',
+    description: 'Brands built to scale across digital touchpoints.',
+    longDescription: 'We create clear, consistent brand systems that translate seamlessly across websites, products, and marketing - so your business looks sharp everywhere it shows up.',
+    outcomes: ['Logo & visual identity systems', 'Design tokens & brand guidelines', 'Marketing assets, social kits & pitch decks'],
+    icon: Palette
   }
 ];
 

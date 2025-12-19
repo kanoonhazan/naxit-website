@@ -5,6 +5,7 @@ export interface Service {
   id: string;
   title: string;
   description: string;
+  longDescription?: string;
   outcomes: string[];
   icon: React.ElementType;
 }
