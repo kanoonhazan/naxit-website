@@ -22,11 +22,12 @@ export const WhyNaxit: React.FC = () => {
             transition={{ duration: 0.6 }}
           >
             <h2 className="font-display text-4xl font-bold mb-6">
-              Design that reduces rework and <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-naxit-primary to-naxit-violet">accelerates release cycles.</span>
+              Design That Speeds Up Delivery <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-naxit-primary to-naxit-violet">and cuts costly rework.</span>
             </h2>
             <p className="text-naxit-muted text-lg mb-8">
-              We understand the engineering constraints of embedded systems and web apps. We don't just hand off JPEGs; we hand off logic, tokens, and code-ready assets.
+              We design with real engineering constraints in mind - across web, mobile, and embedded systems.
+              No loose files. No guesswork. Just clear logic, design tokens, and code-ready assets teams can ship with confidence.
             </p>
 
             <div className="grid grid-cols-2 gap-6">
