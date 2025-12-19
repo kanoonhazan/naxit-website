@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { motion, useInView } from 'framer-motion';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, PanInfo } from 'framer-motion';
 import { Search, Compass, Rocket, TrendingUp, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface Step {
@@ -26,7 +26,7 @@ const steps: Step[] = [
         number: '02',
         title: 'Strategy',
         description: 'Decisions before design. Direction before execution.',
-        details: 'We map user flows, define system boundaries, choose the right technologies, and align brand direction — so every design decision has a reason.',
+        details: 'We map user flows, define system boundaries, choose the right technologies, and align brand direction — so every decision has a reason.',
         icon: Compass,
         color: 'blue',
         gradient: 'from-blue-500 to-cyan-500'
@@ -53,19 +53,7 @@ const steps: Step[] = [
 
 export const HowWeWork: React.FC = () => {
     const [activeStep, setActiveStep] = useState(0);
-    const containerRef = React.useRef<HTMLDivElement>(null);
-    const isInView = useInView(containerRef, { once: false, margin: '-100px' });
-
-    // Auto-progress through steps
-    useEffect(() => {
-        if (!isInView) return;
-
-        const interval = setInterval(() => {
-            setActiveStep((prev) => (prev + 1) % steps.length);
-        }, 5000); // 5 seconds per step
-
-        return () => clearInterval(interval);
-    }, [isInView]);
+    const containerRef = useRef<HTMLDivElement>(null);
 
     // Calculate progress percentage based on active step
     const progressPercentage = ((activeStep + 1) / steps.length) * 100;
@@ -78,13 +66,38 @@ export const HowWeWork: React.FC = () => {
         setActiveStep((prev) => (prev + 1) % steps.length);
     };
 
-    return (
-        <section id="process" className="py-24 bg-gradient-to-b from-black via-naxit-bg to-black relative overflow-hidden">
-            {/* Background Effects */}
-            <div className="absolute top-1/4 right-0 w-[400px] h-[400px] bg-naxit-primary/10 rounded-full blur-[150px] pointer-events-none" />
-            <div className="absolute bottom-1/4 left-0 w-[400px] h-[400px] bg-naxit-cyan/10 rounded-full blur-[150px] pointer-events-none" />
+    // Handle swipe gestures on mobile
+    const handleDragEnd = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+        const swipeThreshold = 50;
+        if (info.offset.x > swipeThreshold) {
+            handlePrevious();
+        } else if (info.offset.x < -swipeThreshold) {
+            handleNext();
+        }
+    };
 
-            <div className="container mx-auto px-8 md:px-12 lg:px-16 relative z-10">
+    // Keyboard navigation
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'ArrowLeft') handlePrevious();
+            if (e.key === 'ArrowRight') handleNext();
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, []);
+
+    return (
+        <section
+            id="process"
+            className="py-16 md:py-24 bg-gradient-to-b from-black via-naxit-bg to-black relative overflow-hidden"
+            aria-label="How We Work Process"
+        >
+            {/* Background Effects */}
+            <div className="absolute top-1/4 right-0 w-[300px] md:w-[400px] h-[300px] md:h-[400px] bg-naxit-primary/10 rounded-full blur-[150px] pointer-events-none" />
+            <div className="absolute bottom-1/4 left-0 w-[300px] md:w-[400px] h-[300px] md:h-[400px] bg-naxit-cyan/10 rounded-full blur-[150px] pointer-events-none" />
+
+            <div className="container mx-auto px-4 sm:px-8 md:px-12 lg:px-16 relative z-10">
 
                 {/* Section Header */}
                 <motion.div
@@ -92,15 +105,15 @@ export const HowWeWork: React.FC = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.6 }}
-                    className="text-center max-w-3xl mx-auto mb-20"
+                    className="text-center max-w-3xl mx-auto mb-12 md:mb-20"
                 >
-                    <h2 className="font-display text-4xl font-bold mb-4">
+                    <h2 className="font-display text-3xl md:text-4xl font-bold mb-4">
                         How We Work
                     </h2>
-                    <p className="text-xl text-white/80 mb-6 font-medium">
+                    <p className="text-lg md:text-xl text-white/80 mb-4 md:mb-6 font-medium">
                         Predictable process. Measurable progress.
                     </p>
-                    <p className="text-lg text-naxit-muted leading-relaxed">
+                    <p className="text-base md:text-lg text-naxit-muted leading-relaxed">
                         People don't buy services — they buy clarity and control.
                         Our process is designed to reduce uncertainty, align teams early, and keep delivery moving without surprises.
                     </p>
@@ -110,7 +123,7 @@ export const HowWeWork: React.FC = () => {
                 <div ref={containerRef} className="relative max-w-7xl mx-auto">
 
                     {/* Horizontal Progress Line Container */}
-                    <div className="relative mb-16">
+                    <div className="relative mb-12 md:mb-16">
                         {/* Background Line */}
                         <div className="absolute top-8 left-0 right-0 h-[2px] bg-white/5 rounded-full">
                             {/* Animated Progress Line */}
@@ -118,6 +131,10 @@ export const HowWeWork: React.FC = () => {
                                 animate={{ width: `${progressPercentage}%` }}
                                 transition={{ duration: 0.8, ease: "easeInOut" }}
                                 className="h-full bg-gradient-to-r from-naxit-primary via-naxit-cyan to-purple-500 relative rounded-full"
+                                role="progressbar"
+                                aria-valuenow={progressPercentage}
+                                aria-valuemin={0}
+                                aria-valuemax={100}
                             >
                                 {/* Animated pulse at the end */}
                                 <motion.div
@@ -134,7 +151,7 @@ export const HowWeWork: React.FC = () => {
                         </div>
 
                         {/* Step Nodes */}
-                        <div className="relative grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div className="relative grid grid-cols-4 gap-2 sm:gap-4">
                             {steps.map((step, index) => {
                                 const isActive = index === activeStep;
                                 const isPassed = index < activeStep;
@@ -142,8 +159,17 @@ export const HowWeWork: React.FC = () => {
                                 return (
                                     <div
                                         key={index}
-                                        className="relative flex flex-col items-center cursor-pointer"
+                                        className="relative flex flex-col items-center cursor-pointer group"
                                         onClick={() => setActiveStep(index)}
+                                        role="button"
+                                        tabIndex={0}
+                                        aria-label={`Go to step ${step.number}: ${step.title}`}
+                                        onKeyDown={(e) => {
+                                            if (e.key === 'Enter' || e.key === ' ') {
+                                                e.preventDefault();
+                                                setActiveStep(index);
+                                            }
+                                        }}
                                     >
                                         {/* Node */}
                                         <motion.div
@@ -152,7 +178,7 @@ export const HowWeWork: React.FC = () => {
                                                 opacity: isActive || isPassed ? 1 : 0.5
                                             }}
                                             transition={{ duration: 0.4, ease: 'easeOut' }}
-                                            className="relative w-16 h-16 mb-4"
+                                            className="relative w-12 h-12 sm:w-16 sm:h-16 mb-3 sm:mb-4"
                                         >
                                             {/* Active glow ring - only for active step */}
                                             {isActive && (
@@ -173,7 +199,7 @@ export const HowWeWork: React.FC = () => {
                                                     }`}
                                             >
                                                 <div className="w-full h-full bg-naxit-bg rounded-full flex items-center justify-center">
-                                                    <step.icon className={`w-7 h-7 transition-colors duration-300 ${isActive ? 'text-white' : isPassed ? 'text-white/80' : 'text-white/40'
+                                                    <step.icon className={`w-5 h-5 sm:w-7 sm:h-7 transition-colors duration-300 ${isActive ? 'text-white' : isPassed ? 'text-white/80' : 'text-white/40'
                                                         }`} />
                                                 </div>
                                             </motion.div>
@@ -186,11 +212,18 @@ export const HowWeWork: React.FC = () => {
                                                 scale: isActive ? 1.1 : 1
                                             }}
                                             transition={{ duration: 0.3 }}
-                                            className={`text-xs font-mono tracking-wider ${isActive ? 'text-naxit-cyan' : 'text-naxit-cyan/60'
+                                            className={`text-[10px] sm:text-xs font-mono tracking-wider ${isActive ? 'text-naxit-cyan' : 'text-naxit-cyan/60'
                                                 }`}
                                         >
                                             STEP {step.number}
                                         </motion.div>
+
+                                        {/* Hover tooltip for desktop */}
+                                        <div className="hidden md:block absolute -bottom-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                                            <div className="bg-slate-900 text-white text-xs px-3 py-1 rounded-lg whitespace-nowrap border border-white/10">
+                                                {step.title}
+                                            </div>
+                                        </div>
                                     </div>
                                 );
                             })}
@@ -198,15 +231,16 @@ export const HowWeWork: React.FC = () => {
                     </div>
 
                     {/* Active Step Card with Navigation Arrows */}
-                    <div className="relative max-w-5xl mx-auto flex items-center gap-4 md:gap-8">
+                    <div className="relative max-w-5xl mx-auto flex items-center gap-2 sm:gap-4 md:gap-8">
                         {/* Left Arrow */}
                         <motion.button
                             whileHover={{ scale: 1.1, x: -4 }}
                             whileTap={{ scale: 0.95 }}
                             onClick={handlePrevious}
-                            className="flex-shrink-0 w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-md border border-white/10 flex items-center justify-center text-white/80 hover:text-white hover:border-naxit-primary/50 transition-all duration-300 shadow-lg hover:shadow-naxit-primary/20"
+                            className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-md border border-white/10 flex items-center justify-center text-white/80 hover:text-white hover:border-naxit-primary/50 transition-all duration-300 shadow-lg hover:shadow-naxit-primary/20 touch-manipulation"
+                            aria-label="Previous step"
                         >
-                            <ChevronLeft className="w-6 h-6 md:w-7 md:h-7" />
+                            <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7" />
                         </motion.button>
 
                         {/* Active Step Card */}
@@ -216,10 +250,14 @@ export const HowWeWork: React.FC = () => {
                             animate={{ opacity: 1, x: 0 }}
                             exit={{ opacity: 0, x: -50 }}
                             transition={{ duration: 0.5, ease: 'easeOut' }}
-                            className="flex-1"
+                            drag="x"
+                            dragConstraints={{ left: 0, right: 0 }}
+                            dragElastic={0.2}
+                            onDragEnd={handleDragEnd}
+                            className="flex-1 cursor-grab active:cursor-grabbing"
                         >
                             <motion.div
-                                className="group relative bg-gradient-to-br from-slate-900/70 to-slate-800/50 backdrop-blur-md rounded-3xl border border-white/10 p-8 md:p-12 overflow-hidden shadow-2xl"
+                                className="group relative bg-gradient-to-br from-slate-900/70 to-slate-800/50 backdrop-blur-md rounded-2xl md:rounded-3xl border border-white/10 p-6 sm:p-8 md:p-12 overflow-hidden shadow-2xl"
                             >
                                 {/* Background shimmer effect */}
                                 <motion.div
@@ -233,40 +271,40 @@ export const HowWeWork: React.FC = () => {
 
                                 <div className="relative">
                                     {/* Icon and Title */}
-                                    <div className="flex items-start gap-6 mb-6">
+                                    <div className="flex items-start gap-4 md:gap-6 mb-4 md:mb-6">
                                         <motion.div
                                             initial={{ rotate: 0 }}
                                             animate={{ rotate: 360 }}
                                             transition={{ duration: 0.8, ease: "easeInOut" }}
-                                            className={`w-20 h-20 rounded-2xl bg-gradient-to-br ${steps[activeStep].gradient} p-0.5 shadow-xl shadow-naxit-cyan/30`}
+                                            className={`w-16 h-16 md:w-20 md:h-20 rounded-xl md:rounded-2xl bg-gradient-to-br ${steps[activeStep].gradient} p-0.5 shadow-xl shadow-naxit-cyan/30`}
                                         >
-                                            <div className="w-full h-full bg-naxit-bg rounded-[14px] flex items-center justify-center">
-                                                {React.createElement(steps[activeStep].icon, { className: 'w-10 h-10 text-white' })}
+                                            <div className="w-full h-full bg-naxit-bg rounded-[10px] md:rounded-[14px] flex items-center justify-center">
+                                                {React.createElement(steps[activeStep].icon, { className: 'w-8 h-8 md:w-10 md:h-10 text-white' })}
                                             </div>
                                         </motion.div>
 
                                         <div className="flex-1">
-                                            <div className="text-sm font-mono text-naxit-cyan/70 mb-2 tracking-wider">
+                                            <div className="text-xs md:text-sm font-mono text-naxit-cyan/70 mb-1 md:mb-2 tracking-wider">
                                                 STEP {steps[activeStep].number}
                                             </div>
-                                            <h3 className="text-3xl md:text-4xl font-bold font-display text-transparent bg-clip-text bg-gradient-to-r from-white to-naxit-cyan mb-4">
+                                            <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold font-display text-transparent bg-clip-text bg-gradient-to-r from-white to-naxit-cyan mb-2 md:mb-4">
                                                 {steps[activeStep].title}
                                             </h3>
                                         </div>
                                     </div>
 
                                     {/* Description */}
-                                    <p className="text-xl md:text-2xl text-white/90 mb-6 font-medium leading-relaxed">
+                                    <p className="text-lg sm:text-xl md:text-2xl text-white/90 mb-4 md:mb-6 font-medium leading-relaxed">
                                         {steps[activeStep].description}
                                     </p>
 
                                     {/* Details */}
-                                    <p className="text-base md:text-lg text-naxit-muted leading-relaxed">
+                                    <p className="text-sm sm:text-base md:text-lg text-naxit-muted leading-relaxed">
                                         {steps[activeStep].details}
                                     </p>
 
                                     {/* Decorative corner accent */}
-                                    <div className={`absolute bottom-0 right-0 w-32 h-32 bg-gradient-to-tl ${steps[activeStep].gradient} opacity-10 rounded-tl-full`} />
+                                    <div className={`absolute bottom-0 right-0 w-24 h-24 md:w-32 md:h-32 bg-gradient-to-tl ${steps[activeStep].gradient} opacity-10 rounded-tl-full`} />
                                 </div>
                             </motion.div>
                         </motion.div>
@@ -276,11 +314,17 @@ export const HowWeWork: React.FC = () => {
                             whileHover={{ scale: 1.1, x: 4 }}
                             whileTap={{ scale: 0.95 }}
                             onClick={handleNext}
-                            className="flex-shrink-0 w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-md border border-white/10 flex items-center justify-center text-white/80 hover:text-white hover:border-naxit-primary/50 transition-all duration-300 shadow-lg hover:shadow-naxit-primary/20"
+                            className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-md border border-white/10 flex items-center justify-center text-white/80 hover:text-white hover:border-naxit-primary/50 transition-all duration-300 shadow-lg hover:shadow-naxit-primary/20 touch-manipulation"
+                            aria-label="Next step"
                         >
-                            <ChevronRight className="w-6 h-6 md:w-7 md:h-7" />
+                            <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7" />
                         </motion.button>
                     </div>
+
+                    {/* Mobile hint */}
+                    <p className="text-center text-xs text-naxit-muted mt-4 md:hidden">
+                        Swipe left or right to navigate
+                    </p>
                 </div>
 
                 {/* Result Statement */}
@@ -289,7 +333,7 @@ export const HowWeWork: React.FC = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.6, delay: 0.3 }}
-                    className="text-center mt-20 relative"
+                    className="text-center mt-12 md:mt-20 relative"
                 >
                     <div className="inline-block relative">
                         <motion.div
@@ -297,7 +341,7 @@ export const HowWeWork: React.FC = () => {
                             animate={{ scale: [1, 1.2, 1] }}
                             transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
                         />
-                        <p className="relative text-xl md:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-naxit-primary via-naxit-cyan to-purple-500 px-8 py-4">
+                        <p className="relative text-lg sm:text-xl md:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-naxit-primary via-naxit-cyan to-purple-500 px-6 sm:px-8 py-4">
                             Result: Fewer surprises. Faster decisions. Confident launches.
                         </p>
                     </div>
