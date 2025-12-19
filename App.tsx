@@ -6,6 +6,7 @@ import { WhyNaxit } from './components/sections/WhyNaxit';
 import { Projects } from './components/sections/Projects';
 import { TechEdge } from './components/sections/TechEdge';
 import { Contact } from './components/sections/Contact';
+import { HowWeWork } from './components/sections/HowWeWork';
 import { Footer } from './components/Footer';
 import { ProjectDetail } from './components/pages/ProjectDetail';
 import { Button } from './components/ui/Button';
@@ -151,6 +152,7 @@ const Home = () => (
     <Hero />
     <WhyNaxit />
     <Services />
+    <HowWeWork />
     <TechEdge />
     <Projects />
     <Contact />
