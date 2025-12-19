@@ -35,16 +35,16 @@ export const Hero: React.FC = () => {
           </div>
 
           <h1 className="font-display text-5xl lg:text-7xl font-bold leading-tight">
-            Design that <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-blue-500 to-cyan-500">engineers can ship</span> — fast.
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-blue-500 to-cyan-500">Digital Systems Partner</span> for Small & Medium Businesses
           </h1>
 
           <p className="text-lg lg:text-xl text-naxit-muted max-w-xl leading-relaxed">
-            From brand systems to embedded GUIs (Nextion, LVGL), we’re the bridge between product teams and production. No fluff, just native-ready assets.
+            We design brands, build websites, craft intuitive user experiences, and develop embedded interfaces — strategically combined to solve real business problems.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 pt-4">
             <Button onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}>
-              Get a project estimate
+              Build your digital system
             </Button>
             <Button variant="secondary" onClick={() => document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' })}>
               See case studies
@@ -64,7 +64,7 @@ export const Hero: React.FC = () => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          <div className="relative w-full aspect-square max-w-[550px] lg:-ml-24 mx-auto">
+          <div className="relative w-full aspect-square max-w-[550px] lg:-ml-24 lg:-mt-24 mx-auto">
 
             {/* SVG Connection Lines - layer-lines (z-10) */}
             <svg className="absolute inset-0 w-full h-full pointer-events-none z-10">
