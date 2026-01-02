@@ -55,8 +55,7 @@ export const HowWeWork: React.FC = () => {
     const [activeStep, setActiveStep] = useState(0);
     const containerRef = useRef<HTMLDivElement>(null);
 
-    // Calculate progress percentage based on active step
-    const progressPercentage = ((activeStep + 1) / steps.length) * 100;
+
 
     const handlePrevious = () => {
         setActiveStep((prev) => (prev - 1 + steps.length) % steps.length);
@@ -122,113 +121,7 @@ export const HowWeWork: React.FC = () => {
                 {/* Horizontal Timeline */}
                 <div ref={containerRef} className="relative max-w-7xl mx-auto">
 
-                    {/* Horizontal Progress Line Container */}
-                    <div className="relative mb-12 md:mb-16">
-                        {/* Background Line */}
-                        <div className="absolute top-8 left-0 right-0 h-[2px] bg-white/5 rounded-full">
-                            {/* Animated Progress Line */}
-                            <motion.div
-                                animate={{ width: `${progressPercentage}%` }}
-                                transition={{ duration: 0.8, ease: "easeInOut" }}
-                                className="h-full bg-gradient-to-r from-naxit-primary via-naxit-cyan to-purple-500 relative rounded-full"
-                                role="progressbar"
-                                aria-valuenow={progressPercentage}
-                                aria-valuemin={0}
-                                aria-valuemax={100}
-                            >
-                                {/* Animated pulse at the end */}
-                                <motion.div
-                                    className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-naxit-cyan"
-                                    animate={{
-                                        scale: [1, 1.5, 1],
-                                        opacity: [1, 0.5, 1]
-                                    }}
-                                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                                />
-                                {/* Glow effect */}
-                                <div className="absolute inset-0 bg-gradient-to-r from-naxit-primary/40 via-naxit-cyan/40 to-purple-500/40 blur-sm rounded-full" />
-                            </motion.div>
-                        </div>
 
-                        {/* Step Nodes */}
-                        <div className="relative grid grid-cols-4 gap-2 sm:gap-4">
-                            {steps.map((step, index) => {
-                                const isActive = index === activeStep;
-                                const isPassed = index < activeStep;
-
-                                return (
-                                    <div
-                                        key={index}
-                                        className="relative flex flex-col items-center cursor-pointer group"
-                                        onClick={() => setActiveStep(index)}
-                                        role="button"
-                                        tabIndex={0}
-                                        aria-label={`Go to step ${step.number}: ${step.title}`}
-                                        onKeyDown={(e) => {
-                                            if (e.key === 'Enter' || e.key === ' ') {
-                                                e.preventDefault();
-                                                setActiveStep(index);
-                                            }
-                                        }}
-                                    >
-                                        {/* Node */}
-                                        <motion.div
-                                            animate={{
-                                                scale: isActive ? 1.15 : 1,
-                                                opacity: isActive || isPassed ? 1 : 0.5
-                                            }}
-                                            transition={{ duration: 0.4, ease: 'easeOut' }}
-                                            className="relative w-12 h-12 sm:w-16 sm:h-16 mb-3 sm:mb-4"
-                                        >
-                                            {/* Active glow ring - only for active step */}
-                                            {isActive && (
-                                                <motion.div
-                                                    className="absolute inset-0 rounded-full border-2 border-naxit-cyan"
-                                                    animate={{ scale: [1, 1.4, 1], opacity: [0.8, 0, 0.8] }}
-                                                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                                                />
-                                            )}
-
-                                            {/* Icon Container */}
-                                            <motion.div
-                                                animate={{
-                                                    rotate: isActive ? 360 : 0,
-                                                }}
-                                                transition={{ duration: 0.6, ease: "easeInOut" }}
-                                                className={`w-full h-full rounded-full bg-gradient-to-br ${step.gradient} p-0.5 shadow-lg transition-shadow duration-300 ${isActive ? 'shadow-naxit-cyan/50' : 'shadow-transparent'
-                                                    }`}
-                                            >
-                                                <div className="w-full h-full bg-naxit-bg rounded-full flex items-center justify-center">
-                                                    <step.icon className={`w-5 h-5 sm:w-7 sm:h-7 transition-colors duration-300 ${isActive ? 'text-white' : isPassed ? 'text-white/80' : 'text-white/40'
-                                                        }`} />
-                                                </div>
-                                            </motion.div>
-                                        </motion.div>
-
-                                        {/* Step Number Badge */}
-                                        <motion.div
-                                            animate={{
-                                                opacity: isActive ? 1 : isPassed ? 0.7 : 0.4,
-                                                scale: isActive ? 1.1 : 1
-                                            }}
-                                            transition={{ duration: 0.3 }}
-                                            className={`text-[10px] sm:text-xs font-mono tracking-wider ${isActive ? 'text-naxit-cyan' : 'text-naxit-cyan/60'
-                                                }`}
-                                        >
-                                            STEP {step.number}
-                                        </motion.div>
-
-                                        {/* Hover tooltip for desktop */}
-                                        <div className="hidden md:block absolute -bottom-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                                            <div className="bg-slate-900 text-white text-xs px-3 py-1 rounded-lg whitespace-nowrap border border-white/10">
-                                                {step.title}
-                                            </div>
-                                        </div>
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    </div>
 
                     {/* Active Step Card with Navigation Arrows */}
                     <div className="relative max-w-5xl mx-auto flex items-center gap-2 sm:gap-4 md:gap-8">
